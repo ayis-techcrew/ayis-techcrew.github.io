@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ATAA Animation</title>
+
+  <style>
+    /* RESET: Remove default margin and padding, center everything */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      background-color: #202320;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+
+    /* WRAPPER: Center the animation */
+    .center-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+
+    /* CONTAINER: LOGO + TEXT side by side */
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      max-width: 90vw;
+      position: relative;
+    }
+
+    /* LOGO IMAGE */
+    .logo {
+      width: 25vw;
+      max-width: 300px;
+      animation: logoShrink 2s ease forwards;
+      z-index: 2;
+    }
+
+    /* TEXT WRAPPER */
+    .text-wrapper {
+      position: relative;
+      overflow: hidden;
+      width: 0;
+      margin-left: 0;
+      animation: expandTextWrapper 2s ease 2s forwards;
+    }
+
+    /* TEXT IMAGE */
+    .text {
+      width: 35vw;
+      max-width: 400px;
+      transform: translateX(-100%);
+      animation: textSlideOut 2s ease 2s forwards;
+    }
+
+    /* FOOTER TEXT */
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #443979;
+      font-weight: bold;
+      line-height: 1.5;
+      font-family: Arial, sans-serif;
+    }
+
+    /* FADE OUT CLASS */
+    .fade-out {
+      opacity: 0;
+    }
+
+    /* LOGO SHRINK ANIMATION */
+    @keyframes logoShrink {
+      0% {
+        width: 50vw;
+      }
+      100% {
+        width: 25vw;
+      }
+    }
+
+    /* TEXT WRAPPER EXPAND ANIMATION */
+    @keyframes expandTextWrapper {
+      0% {
+        width: 0;
+        margin-left: 0;
+      }
+      100% {
+        width: 35vw;
+        margin-left: -220px;
+      }
+    }
+
+    /* TEXT SLIDE OUT ANIMATION */
+    @keyframes textSlideOut {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    /* RESPONSIVE SETTINGS */
+    @media (max-width: 768px) {
+      .logo {
+        width: 40vw;
+        max-width: 200px;
+      }
+      .text {
+        width: 50vw;
+        max-width: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        width: 45vw;
+        max-width: 180px;
+      }
+      .text {
+        width: 55vw;
+        max-width: 220px;
+      }
+    }
+  </style>
+
+  <script>
+  // Wait for animations to finish, then fade out and redirect
+  window.onload = () => {
+    setTimeout(() => {
+      document.body.classList.add('fade-out');
+    }, 4100); // Start fade-out
+
+    setTimeout(() => {
+      window.location.href = "/login/student-teacher/select.html"; // <-- FIXED PATH
+    }, 5100); // Redirect after fade-out
+  };
+  </script>
+
+
+
+</head>
+<body>
+
+  <!-- CENTER ANIMATION -->
+  <div class="center-wrapper">
+    <div class="container">
+      <!-- LOGO -->
+      <img src="/login/login-intro-vid/ataa-icon.png" alt="ATAA Logo" class="logo">
+      
+      <!-- TEXT -->
+      <div class="text-wrapper">
+        <img src="/login/login-intro-vid/ataa-text.png" alt="ATAA Text" class="text">
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER TEXT -->
+  <div class="footer">
+    Developed By<br>
+    AYIS Tech Crew
+  </div>
+
+</body>
+</html>
