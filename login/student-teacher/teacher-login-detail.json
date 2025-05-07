@@ -1,0 +1,27 @@
+[
+    {
+      "employee_id": "T001",
+      "name": "Teacher 1",
+      "username": "teacher1",
+      "phone": "+966559238031",
+      "email": "ummershaik19@gmail.com",
+      "password": "teach123"
+    },
+    {
+      "employee_id": "9124",
+      "name": "Shaik Ahmed",
+      "username": "skahmed",
+      "phone": "+966554239137",
+      "email": "ahmed.shaik894@gmail.com",
+      "password": "skahmed1234"
+    },
+    {
+      "employee_id": "T002",
+      "name": "Teacher 2",
+      "username": "teacher2",
+      "phone": "+966550760953",
+      "email": "alyasmincc@gmail.com",
+      "password": "teach234"
+    }
+  ]
+  
