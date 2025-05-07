@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Student Registration</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body {
@@ -108,19 +108,19 @@
     <h2>Student Registration</h2>
 
     <label>Admission Number <span class="required">*</span></label>
-    <input type="text" id="admission_no" placeholder="Eg: 1234" />
+    <input type="text" id="admission_no" placeholder="Eg: 1234">
 
     <label>Registration Number <span class="required">*</span></label>
-    <input type="text" id="registration_no" placeholder="Eg: 1234" />
+    <input type="text" id="registration_no" placeholder="Eg: 1234">
 
     <label>Full Name <span class="required">*</span></label>
-    <input type="text" id="name" placeholder="Student Name" />
+    <input type="text" id="name" placeholder="Student Name">
 
     <label>Email <span class="required">*</span></label>
-    <input type="email" id="email" placeholder="example@email.com" />
+    <input type="email" id="email" placeholder="example@email.com">
 
     <label>Phone Number <span class="required">*</span></label>
-    <input type="tel" id="phone" placeholder="Eg: 05********" pattern="[0-9]{10}" />
+    <input type="tel" id="phone" placeholder="Eg: 05********" pattern="[0-9]{10}">
 
     <label>Grade <span class="required">*</span></label>
     <select id="grade" required>
@@ -142,12 +142,12 @@
     </select>
 
     <label>Section <span class="required">*</span></label>
-    <input type="text" id="section" placeholder="e.g. A, B, C" required />
+    <input type="text" id="section" placeholder="e.g. A, B, C" required>
 
     <label>Password <span class="required">*</span></label>
     <div class="input-wrapper">
-      <input type="password" id="password" placeholder="Enter Password" required />
-      <img src="logo-eye.png" class="eye-icon" onclick="toggleVisibility('password')" />
+      <input type="password" id="password" placeholder="Enter Password" required>
+      <img src="logo-eye.png" class="eye-icon" onclick="toggleVisibility('password')">
     </div>
     <div class="note">
       Password must be at least 8 characters, include 1 uppercase letter and 1 number.
@@ -155,8 +155,8 @@
 
     <label>Confirm Password <span class="required">*</span></label>
     <div class="input-wrapper">
-      <input type="password" id="confirm_password" placeholder="Confirm Password" required />
-      <img src="logo-eye.png" class="eye-icon" onclick="toggleVisibility('confirm_password')" />
+      <input type="password" id="confirm_password" placeholder="Confirm Password" required>
+      <img src="logo-eye.png" class="eye-icon" onclick="toggleVisibility('confirm_password')">
     </div>
 
     <button class="register-btn" onclick="register()">Register</button>
@@ -195,6 +195,7 @@
 
       // Clear previous errors
       errorElement.textContent = "";
+      errorElement.style.display = "none";
 
       // Validation
       if (!admission && !registration) {
@@ -209,7 +210,7 @@
 
       const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
       if (!passwordRegex.test(password)) {
-        showError("Password must be 8+ chars with 1 uppercase and 1 number");
+        showError("Password must be 8+ characters with 1 uppercase and 1 number");
         return;
       }
 
