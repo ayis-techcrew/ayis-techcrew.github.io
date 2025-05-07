@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher OTP Verification</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #1e1e1e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .otp-container {
+      background-color: #2a2a2a;
+      border: 2px solid #FFD700;
+      padding: 30px;
+      border-radius: 10px;
+      width: 350px;
+      text-align: center;
+      color: white;
+    }
+
+    .otp-container img {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+
+    .otp-container h2 {
+      margin-bottom: 20px;
+      color: #FFD700;
+    }
+
+    .otp-inputs {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+    }
+
+    .otp-inputs input {
+      width: 60px;
+      padding: 12px;
+      font-size: 24px;
+      text-align: center;
+      background-color: #3a3a3a;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .otp-inputs input.error {
+      border-color: red;
+    }
+
+    .otp-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #FFD700;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    .resend-link {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .resend-link a {
+      color: #FFD700;
+      text-decoration: none;
+    }
+
+    .resend-link a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-top: 4px solid #FFD700;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 0.8s linear infinite;
+      display: none;
+      margin: 15px auto 0;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="otp-container">
+    <img src="logo-ayis.png" alt="School Logo">
+    <h2>OTP VERIFICATION</h2>
+
+    <div class="otp-inputs">
+      <input type="text" maxlength="1" id="otp1" oninput="moveNext(this, 'otp2')">
+      <input type="text" maxlength="1" id="otp2" oninput="moveNext(this, 'otp3')" onkeydown="movePrev(event, 'otp1')">
+      <input type="text" maxlength="1" id="otp3" oninput="moveNext(this, 'otp4')" onkeydown="movePrev(event, 'otp2')">
+      <input type="text" maxlength="1" id="otp4" onkeydown="movePrev(event, 'otp3')">
+    </div>
+
+    <button class="otp-btn" onclick="verifyOtp()">VERIFY</button>
+    <div class="spinner" id="spinner"></div>
+    <div class="error-message" id="error"></div>
+
+    <div class="resend-link">
+      Didn't receive? <a href="#" onclick="resendOtp()">Resend OTP</a>
+    </div>
+  </div>
+
+  <script>
+    const email = sessionStorage.getItem('teacherEmail');
+
+    function moveNext(current, nextId) {
+      if (current.value.length === 1) {
+        document.getElementById(nextId)?.focus();
+      }
+    }
+
+    function movePrev(e, prevId) {
+      if (e.key === 'Backspace' && e.target.value === '') {
+        document.getElementById(prevId)?.focus();
+      }
+    }
+
+    function verifyOtp() {
+      const otp1 = document.getElementById('otp1');
+      const otp2 = document.getElementById('otp2');
+      const otp3 = document.getElementById('otp3');
+      const otp4 = document.getElementById('otp4');
+      const errorDiv = document.getElementById('error');
+      const spinner = document.getElementById('spinner');
+
+      [otp1, otp2, otp3, otp4].forEach(i => i.classList.remove('error'));
+      errorDiv.textContent = '';
+      spinner.style.display = 'block';
+
+      const otp = otp1.value + otp2.value + otp3.value + otp4.value;
+
+      fetch('/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, otp: otp })
+      })
+      .then(response => {
+        spinner.style.display = 'none';
+        if (response.ok) {
+          window.location.href = "dashboard\teacher\teacher-open.html"; // or your redirect target
+        } else {
+          [otp1, otp2, otp3, otp4].forEach(i => i.classList.add('error'));
+          errorDiv.textContent = 'Incorrect OTP. Please try again.';
+        }
+      })
+      .catch(() => {
+        spinner.style.display = 'none';
+        errorDiv.textContent = 'An error occurred. Please try again later.';
+      });
+    }
+
+    function resendOtp() {
+      fetch('/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('OTP resent successfully!');
+        } else {
+          alert('Failed to resend OTP.');
+        }
+      });
+    }
+
+    // Auto focus first box
+    window.onload = () => {
+      document.getElementById('otp1').focus();
+    };
+  </script>
+</body>
+</html>

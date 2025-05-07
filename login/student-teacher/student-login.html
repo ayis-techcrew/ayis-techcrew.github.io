@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Login</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #1e1e1e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      background-color: #2a2a2a;
+      border: 2px solid #FFD700;
+      padding: 30px;
+      border-radius: 10px;
+      width: 350px;
+      text-align: center;
+      color: white;
+      box-sizing: border-box;
+    }
+    .login-container img.logo {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #FFD700;
+    }
+    .input-wrapper {
+      position: relative;
+      margin: 10px 0;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      background-color: #3a3a3a;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      color: white;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    input.error {
+      border-color: red;
+    }
+    .eye-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #FFD700;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+    .links {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .links a {
+      text-decoration: none;
+      color: grey;
+      margin: 0 5px;
+    }
+    .links a.yellow {
+      color: #FFD700;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-container">
+  <img src="logo-ayis.png" alt="School Logo" class="logo">
+  <h2>STUDENT LOGIN</h2>
+  
+  <div class="input-wrapper">
+    <input type="text" id="username" placeholder="Admission No. / Registration No.">
+  </div>
+
+  <div class="input-wrapper">
+    <input type="password" id="password" placeholder="Password">
+    <img src="logo-eye.png" alt="Show Password" class="eye-icon" onclick="togglePassword()">
+  </div>
+
+  <button class="login-btn" onclick="login()">LOGIN</button>
+  <div class="error-message" id="error"></div>
+
+  <div class="links">
+    <a href="student-register.html" class="yellow">Register</a> |
+    <a href="teacher-login.html" class="yellow">Teacher?</a>
+  </div>
+</div>
+
+<script>
+  function togglePassword() {
+    const password = document.getElementById('password');
+    password.type = password.type === 'password' ? 'text' : 'password';
+  }
+
+  function showError(message) {
+    document.getElementById('error').textContent = message;
+  }
+
+  function login() {
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    usernameInput.classList.remove('error');
+    passwordInput.classList.remove('error');
+
+    fetch('student-login-detail.json')
+      .then(response => response.json())
+      .then(data => {
+        const student = data.find(student =>
+          (student.admission_no === usernameInput.value.trim() || student.registration_no === usernameInput.value.trim()) &&
+          student.password === passwordInput.value.trim()
+        );
+
+        if (student) {
+          // Save full student data
+          localStorage.setItem("studentData", JSON.stringify(student));
+          window.location.href = "../../dashboard/student/student-open.html";
+        } else {
+          const userExists = data.some(student =>
+            student.admission_no === usernameInput.value.trim() || student.registration_no === usernameInput.value.trim()
+          );
+          if (!userExists) {
+            usernameInput.classList.add('error');
+            showError('Incorrect Admission/Registration No. Please check again.');
+          } else {
+            passwordInput.classList.add('error');
+            showError('Incorrect password. Please try again.');
+          }
+        }
+      })
+      .catch(() => {
+        showError('Failed to load login data. Please try again later.');
+      });
+  }
+</script>
+
+</body>
+</html>
