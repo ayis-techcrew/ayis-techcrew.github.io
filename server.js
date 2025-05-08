@@ -67,13 +67,22 @@ app.post('/send-otp', (req, res) => {
   if (!teacher) return res.status(404).json({ message: 'Teacher not found.' });
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  generatedOtps[email] = otp;
+  generatedOtps[email] = { otp, createdAt: Date.now() };
 
   const mailOptions = {
-    from: 'your-email@gmail.com',
+    from: '"AYIS Tech Crew" <ayistechcrew@gmail.com>',
     to: email,
-    subject: 'OTP Verification',
-    text: `Your OTP is: ${otp}`
+    subject: 'Your OTP for Login Verification',
+    html: `
+      <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+        <p>Dear ${teacher.name},</p>
+        <p>Your OTP is: <strong style="font-size: 18px; color:#ff9900;">${otp}</strong></p>
+        <p>This OTP is valid for <strong>10 minutes</strong>.</p>
+        <br>
+        <p>Best regards,</p>
+        <p>AYIS Tech Crew</p>
+      </div>
+    `
   };
 
   transporter.sendMail(mailOptions, (err, info) => {
@@ -84,8 +93,18 @@ app.post('/send-otp', (req, res) => {
 
 app.post('/verify-otp', (req, res) => {
   const { email, otp } = req.body;
-  if (generatedOtps[email] === otp) {
-    delete generatedOtps[email];
+
+  const otpData = generatedOtps[email];
+  if (!otpData) return res.status(400).json({ message: 'OTP not generated.' });
+
+  const otpAge = Date.now() - otpData.createdAt;
+  if (otpAge > 10 * 60 * 1000) {
+    delete generatedOtps[email]; // Expired OTP
+    return res.status(400).json({ message: 'OTP expired.' });
+  }
+
+  if (otpData.otp === otp) {
+    delete generatedOtps[email]; // OTP is valid, delete it
     res.status(200).json({ message: 'OTP verified.' });
   } else {
     res.status(400).json({ message: 'Invalid OTP.' });
