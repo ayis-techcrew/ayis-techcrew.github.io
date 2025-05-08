@@ -12,8 +12,8 @@ const PORT = process.env.PORT || 3000;
 
 // Supabase client
 const supabase = createClient(
-  'https://qvfvxhyqogzrfvlgqzeb.supabase.co',
-  'YOUR_SUPABASE_SECRET_KEY'
+  'https://mdfgthpblsgrmvesgzwt.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kZmd0aHBibHNncm12ZXNnend0Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NjY0MjI5NiwiZXhwIjoyMDYyMjE4Mjk2fQ.QsADRcID3NN6VleEP16AVO2nQ7pTCE0peHuQWYW9g3o'
 );
 
 // Middleware
@@ -26,8 +26,8 @@ app.use(express.static(path.join(__dirname, '/')));
 // LOCAL (LEGACY) FILE STORAGE SETUP
 // ====================
 const legacyUpload = multer({ dest: 'uploads/' });
-const studentDataPath = 'student-login-detail.json';
-const teacherDataPath = 'teacher-login-detail.json';
+const studentDataPath = '/login/student-teacher/student-login-detail.json';
+const teacherDataPath = '/login/student-teacher/teacher-login-detail.json';
 
 // Ensure local JSON files exist
 if (!fs.existsSync(studentDataPath)) fs.writeFileSync(studentDataPath, '[]');
@@ -55,8 +55,8 @@ let generatedOtps = {};
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'your-email@gmail.com', // replace with your email
-    pass: 'your-app-password'     // use app password from Gmail
+    user: 'ayistechcrew@gmail.com', // replace with your email
+    pass: 'qgny whhr euzk wfoo'     // use app password from Gmail
   }
 });
 
