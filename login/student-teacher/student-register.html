@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Student Registration</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" />
   <style>
     body {
       margin: 0;
@@ -69,19 +68,11 @@
       font-size: 16px;
       margin-top: 20px;
       cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .register-btn:hover {
-      background-color: #e6c200;
     }
     .error-message {
-      color: #ff6b6b;
-      background: #3a3a3a;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 15px;
-      border-left: 3px solid #ff6b6b;
-      font-size: 14px;
+      color: red;
+      margin-top: 10px;
+      font-size: 13px;
     }
     .note {
       font-size: 12px;
@@ -95,10 +86,8 @@
     .links a {
       color: #FFD700;
       text-decoration: none;
-      transition: opacity 0.3s;
     }
     .links a:hover {
-      opacity: 0.8;
       text-decoration: underline;
     }
   </style>
@@ -108,22 +97,22 @@
     <h2>Student Registration</h2>
 
     <label>Admission Number <span class="required">*</span></label>
-    <input type="text" id="admission_no" placeholder="Eg: 1234">
+    <input type="text" id="admission_no" placeholder="Eg: 1234" />
 
     <label>Registration Number <span class="required">*</span></label>
-    <input type="text" id="registration_no" placeholder="Eg: 1234">
+    <input type="text" id="registration_no" placeholder="Eg: 1234" />
 
     <label>Full Name <span class="required">*</span></label>
-    <input type="text" id="name" placeholder="Student Name">
+    <input type="text" id="name" placeholder="Student Name" />
 
     <label>Email <span class="required">*</span></label>
-    <input type="email" id="email" placeholder="example@email.com">
+    <input type="text" id="email" placeholder="example@email.com" />
 
     <label>Phone Number <span class="required">*</span></label>
-    <input type="tel" id="phone" placeholder="Eg: 05********" pattern="[0-9]{10}">
+    <input type="text" id="phone" placeholder="Eg: 05********" />
 
     <label>Grade <span class="required">*</span></label>
-    <select id="grade" required>
+    <select id="grade">
       <option value="">-- Select Grade --</option>
       <option>LKG</option>
       <option>UKG</option>
@@ -142,12 +131,12 @@
     </select>
 
     <label>Section <span class="required">*</span></label>
-    <input type="text" id="section" placeholder="e.g. A, B, C" required>
+    <input type="text" id="section" placeholder="e.g. A, B, C" />
 
     <label>Password <span class="required">*</span></label>
     <div class="input-wrapper">
-      <input type="password" id="password" placeholder="Enter Password" required>
-      <img src="logo-eye.png" class="eye-icon" onclick="toggleVisibility('password')">
+      <input type="password" id="password" placeholder="Enter Password" />
+      <img src="logo-eye.png" class="eye-icon" onclick="toggleVisibility('password')" />
     </div>
     <div class="note">
       Password must be at least 8 characters, include 1 uppercase letter and 1 number.
@@ -155,8 +144,8 @@
 
     <label>Confirm Password <span class="required">*</span></label>
     <div class="input-wrapper">
-      <input type="password" id="confirm_password" placeholder="Confirm Password" required>
-      <img src="logo-eye.png" class="eye-icon" onclick="toggleVisibility('confirm_password')">
+      <input type="password" id="confirm_password" placeholder="Confirm Password" />
+      <img src="logo-eye.png" class="eye-icon" onclick="toggleVisibility('confirm_password')" />
     </div>
 
     <button class="register-btn" onclick="register()">Register</button>
@@ -168,20 +157,12 @@
   </div>
 
   <script>
-    // Initialize Supabase
-    const supabaseUrl = 'https://mdfgthpblsgrmvesgzwt.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kZmd0aHBibHNncm12ZXNnend0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY2NDIyOTYsImV4cCI6MjA2MjIxODI5Nn0.a5nlKgTfO5LZcceKRRrx8dOskVKQd3WPJP43gJOTsdw';
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
     function toggleVisibility(fieldId) {
       const input = document.getElementById(fieldId);
-      const icon = input.nextElementSibling;
       input.type = input.type === 'password' ? 'text' : 'password';
-      icon.src = input.type === 'password' ? 'logo-eye.png' : 'logo-eye-closed.png';
     }
 
-    async function register() {
-      // Get form values
+    function register() {
       const admission = document.getElementById('admission_no').value.trim();
       const registration = document.getElementById('registration_no').value.trim();
       const name = document.getElementById('name').value.trim();
@@ -189,90 +170,58 @@
       const phone = document.getElementById('phone').value.trim();
       const grade = document.getElementById('grade').value;
       const section = document.getElementById('section').value.trim();
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirm_password').value;
-      const errorElement = document.getElementById('error');
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirm_password').value.trim();
+      const error = document.getElementById('error');
 
-      // Clear previous errors
-      errorElement.textContent = "";
-      errorElement.style.display = "none";
+      error.textContent = "";
 
-      // Validation
       if (!admission && !registration) {
-        showError("Please enter either Admission or Registration number");
+        error.textContent = "Please enter either Admission Number or Registration Number.";
         return;
       }
 
       if (!name || !email || !phone || !grade || !section || !password || !confirmPassword) {
-        showError("All fields are required");
+        error.textContent = "All fields are required.";
         return;
       }
 
       const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
       if (!passwordRegex.test(password)) {
-        showError("Password must be 8+ characters with 1 uppercase and 1 number");
+        error.textContent = "Password must be at least 8 characters, include 1 uppercase letter and 1 number.";
         return;
       }
 
       if (password !== confirmPassword) {
-        showError("Passwords don't match");
+        error.textContent = "Passwords do not match.";
         return;
       }
 
-      try {
-        // 1. Create auth user
-        const { data: authData, error: authError } = await supabase.auth.signUp({
+      fetch('/register-student', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          admission_no: admission,
+          registration_no: registration,
+          name,
           email,
-          password,
-          options: {
-            data: {
-              name,
-              phone,
-              user_type: 'student'
-            },
-            emailRedirectTo: window.location.origin + '/student-login.html'
-          }
-        });
-
-        if (authError) throw authError;
-
-        // 2. Create student profile
-        const { error: profileError } = await supabase
-          .from('students')
-          .insert([{
-            admission_no: admission || null,
-            registration_no: registration || null,
-            name,
-            email,
-            phone,
-            grade,
-            section,
-            user_id: authData.user.id
-          }]);
-
-        if (profileError) throw profileError;
-
-        // Success
-        alert('Registration successful! Please check your email for verification.');
-        window.location.href = 'student-login.html';
-      } catch (error) {
-        console.error('Registration error:', error);
-        
-        // Handle specific errors
-        if (error.message.includes('already registered')) {
-          showError("This email is already registered");
-        } else if (error.message.includes('duplicate')) {
-          showError("Admission/Registration number already exists");
+          phone,
+          grade,
+          section,
+          password
+        })
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Registration successful!');
+          window.location.href = 'student-login.html';
         } else {
-          showError(error.message || "Registration failed. Please try again.");
+          return response.text().then(msg => { throw new Error(msg); });
         }
-      }
-    }
-
-    function showError(message) {
-      const errorElement = document.getElementById('error');
-      errorElement.textContent = message;
-      errorElement.style.display = 'block';
+      })
+      .catch(err => {
+        error.textContent = err.message || "Registration failed.";
+      });
     }
   </script>
 </body>
